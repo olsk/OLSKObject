@@ -45,8 +45,30 @@ const mod = {
 		};
 	},
 
-	
+	OLSKObjectRemap (param1, param2, param3 = false) {
+		if (typeof param1 !== 'object' || param1 === null) {
+			throw new Error('OLSKErrorInputNotValid');
+		}
 
+		if (typeof param2 !== 'object' || param2 === null) {
+			throw new Error('OLSKErrorInputNotValid');
+		}
+
+		if (typeof param3 !== 'boolean') {
+			throw new Error('OLSKErrorInputNotValid');
+		}
+
+		return Object.entries(param2).reduce(function (coll, item) {
+			if (param3) {
+				item = item.reverse();
+			}
+			
+			return !param1[item[0]] ? coll : Object.assign(coll, {
+				[item[1]]: param1[item[0]],
+			});
+		}, {});
+	},
+	
 };
 
 export default mod;

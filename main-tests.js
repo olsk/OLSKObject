@@ -169,3 +169,61 @@ describe('OLSKObjectJSONSchema', function OLSKObjectJSONSchema() {
 	});
 
 });
+
+describe('OLSKObjectRemap', function test_OLSKObjectRemap() {
+	
+	it('throws if param1 not object', function () {
+		throws(function () {
+			mod.OLSKObjectRemap(null, {});
+		}, /OLSKErrorInputNotValid/);
+	});
+
+	it('throws if param2 not object', function () {
+		throws(function () {
+			mod.OLSKObjectRemap({}, null);
+		}, /OLSKErrorInputNotValid/);
+	});
+
+	it('returns object', function () {
+		deepEqual(mod.OLSKObjectRemap({}, {}), {});
+	});
+
+	it('throws if param3 not boolean', function () {
+		throws(function () {
+			mod.OLSKObjectRemap({}, {}, null);
+		}, /OLSKErrorInputNotValid/);
+	});
+
+	it('excludes if not in param2', function () {
+		deepEqual(mod.OLSKObjectRemap({
+			[Math.random().toString()]: Math.random().toString()
+		}, {}), {});
+	});
+
+	it('remaps if in param2', function () {
+		const item = Math.random().toString();
+		const source = Math.random().toString();
+		const destination = Math.random().toString();
+		deepEqual(mod.OLSKObjectRemap({
+			[source]: item,
+		}, {
+			[source]: destination,
+		}), {
+			[destination]: item,
+		});
+	});
+
+	it('remaps backward if param3 and in param2', function () {
+		const item = Math.random().toString();
+		const source = Math.random().toString();
+		const destination = Math.random().toString();
+		deepEqual(mod.OLSKObjectRemap({
+			[destination]: item,
+		}, {
+			[source]: destination,
+		}, true), {
+			[source]: item,
+		});
+	});
+
+});
