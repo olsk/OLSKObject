@@ -68,6 +68,28 @@ const mod = {
 			});
 		}, {});
 	},
+
+	OLSKObjectPostJSONParse (inputData) {
+		if (!inputData) {
+			return inputData;
+		}
+
+		if (Array.isArray(inputData)) {
+			return inputData.map(mod.OLSKObjectPostJSONParse);
+		}
+
+		for (const key in inputData) {
+			if (key.slice(-4) === 'Date') {
+				inputData[key] = new Date(inputData[key]);
+			} else if (Array.isArray(inputData[key])) {
+				inputData[key].map(mod.OLSKObjectPostJSONParse);
+			} else if (typeof inputData[key] === 'object') {
+				mod.OLSKObjectPostJSONParse(inputData[key]);
+			}
+		}
+
+		return inputData;
+	},
 	
 };
 

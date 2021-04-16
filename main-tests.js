@@ -227,3 +227,59 @@ describe('OLSKObjectRemap', function test_OLSKObjectRemap() {
 	});
 
 });
+
+describe('OLSKObjectPostJSONParse', function test_OLSKObjectPostJSONParse() {
+
+	it('returns input null', function() {
+		deepEqual(mod.OLSKObjectPostJSONParse(null), null);
+	});
+
+	it('returns input object', function() {
+		deepEqual(mod.OLSKObjectPostJSONParse({}), {});
+	});
+
+	it('returns input with *Date as date', function() {
+		deepEqual(mod.OLSKObjectPostJSONParse({
+			alfaDate: '2018-12-09T19:07:01.902Z',
+		}), {
+			alfaDate: new Date('2018-12-09T19:07:01.902Z'),
+		});
+	});
+
+	it('returns input with Array *Date as date', function() {
+		deepEqual(mod.OLSKObjectPostJSONParse({
+			alfa: [
+				{
+					bravoDate: '2018-12-09T19:07:01.902Z',
+				}
+			],
+		}), {
+			alfa: [
+				{
+					bravoDate: new Date('2018-12-09T19:07:01.902Z'),
+				}
+			],
+		});
+	});
+
+	it('returns input with object *Date as date', function() {
+		deepEqual(mod.OLSKObjectPostJSONParse({
+			alfa: {
+				bravoDate: '2018-12-09T19:07:01.902Z',
+			},
+		}), {
+			alfa: {
+				bravoDate: new Date('2018-12-09T19:07:01.902Z'),
+			},
+		});
+	});
+
+	it('returns input array with objects parsed', function() {
+		deepEqual(mod.OLSKObjectPostJSONParse([{
+			alfaDate: '2018-12-09T19:07:01.902Z',
+		}]), [{
+			alfaDate: new Date('2018-12-09T19:07:01.902Z'),
+		}]);
+	});
+
+});
