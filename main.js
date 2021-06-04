@@ -10,6 +10,30 @@ const mod = {
 		}, {});
 	},
 
+	OLSKObjectTrim (inputData) {
+		if (typeof inputData !== 'object' || inputData === null) {
+			throw new Error('OLSKErrorInputNotValid');
+		}
+
+		return Object.fromEntries(Object.entries(inputData).map(function (e) {
+			return e.map(function (e) {
+				if (Array.isArray(e)) {
+					return e.map(mod.OLSKObjectTrim);
+				}
+
+				if (typeof e === 'object') {
+					return mod.OLSKObjectTrim(e);
+				}
+
+				if (typeof e !== 'string') {
+					return e;
+				}
+				
+				return e.trim();
+			});
+		}));
+	},
+
 	_OLSKObjectInferredType (inputData) {
 		if (typeof inputData !== 'string') {
 			throw new Error('OLSKErrorInputNotValid');
@@ -93,4 +117,4 @@ const mod = {
 	
 };
 
-export default mod;
+Object.assign(exports, mod);

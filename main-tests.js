@@ -1,6 +1,6 @@
 const { deepEqual, throws } = require('assert');
 
-const mod = require('./main.js').default;
+const mod = require('./main.js');
 
 describe('OLSKObjectSafeCopy', function test_OLSKObjectSafeCopy() {
 
@@ -19,6 +19,65 @@ describe('OLSKObjectSafeCopy', function test_OLSKObjectSafeCopy() {
 	
 	it('ignores $dynamic fields', function () {
 		deepEqual(mod.OLSKObjectSafeCopy(item).$charlie, undefined);
+	});
+
+});
+
+describe('OLSKObjectTrim', function test_OLSKObjectTrim() {
+	
+	it('throws if not object', function () {
+		throws(function () {
+			mod.OLSKObjectTrim(null);
+		}, /OLSKErrorInputNotValid/);
+	});
+
+	it('returns inputData', function () {
+		const item = {};
+		deepEqual(mod.OLSKObjectTrim(item), item);
+	});
+
+	it('ignores if not string', function () {
+		const item = Math.random().toString();
+		deepEqual(mod.OLSKObjectTrim({
+			item,
+		}), {
+			item,
+		});
+	});
+
+	it('trims if string', function () {
+		const item = Math.random().toString();
+		deepEqual(mod.OLSKObjectTrim({
+			item: ' ' + item + ' ',
+		}), {
+			item,
+		});
+	});
+
+	it('calls recursively', function () {
+		const item = Math.random().toString();
+		deepEqual(mod.OLSKObjectTrim({
+			[item]: {
+				item: ' ' + item + ' ',
+			},
+		}), {
+			[item]: {
+				item,
+			},
+		});
+	});
+
+	it('calls on arrays', function () {
+		const item = Math.random().toString();
+		deepEqual(mod.OLSKObjectTrim({
+			[item]: [{
+				item: ' ' + item + ' ',
+			}],
+		}), {
+			[item]: [{
+				item,
+			}],
+		});
 	});
 
 });
