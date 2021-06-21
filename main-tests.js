@@ -37,7 +37,7 @@ describe('OLSKObjectTrim', function test_OLSKObjectTrim() {
 	});
 
 	it('ignores if not string', function () {
-		const item = Math.random().toString();
+		const item = function () {};
 		deepEqual(mod.OLSKObjectTrim({
 			item,
 		}), {
@@ -77,6 +77,15 @@ describe('OLSKObjectTrim', function test_OLSKObjectTrim() {
 			[item]: [{
 				item,
 			}],
+		});
+	});
+
+	it('trims array strings', function () {
+		const item = Math.random().toString();
+		deepEqual(mod.OLSKObjectTrim({
+			[item]: [' ' + item + ' '],
+		}), {
+			[item]: [item],
 		});
 	});
 

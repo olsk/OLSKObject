@@ -11,6 +11,10 @@ const mod = {
 	},
 
 	OLSKObjectTrim (inputData) {
+		if (typeof inputData === 'string') {
+			return inputData.trim();
+		}
+
 		if (typeof inputData !== 'object' || inputData === null) {
 			throw new Error('OLSKErrorInputNotValid');
 		}
