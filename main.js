@@ -25,6 +25,10 @@ const mod = {
 					return e.map(mod.OLSKObjectTrim);
 				}
 
+				if (e instanceof Date) {
+					return e
+				}
+
 				if (typeof e === 'object') {
 					return mod.OLSKObjectTrim(e);
 				}

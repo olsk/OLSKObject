@@ -36,13 +36,19 @@ describe('OLSKObjectTrim', function test_OLSKObjectTrim() {
 		deepEqual(mod.OLSKObjectTrim(item), item);
 	});
 
-	it('ignores if not string', function () {
-		const item = function () {};
-		deepEqual(mod.OLSKObjectTrim({
-			item,
-		}), {
-			item,
+	Object.entries({
+		function: (function () {}),
+		date: new Date(),
+	}).forEach(function ([key, item]) {
+		
+		it(`ignores if ${ key }`, function () {
+			deepEqual(mod.OLSKObjectTrim({
+				item,
+			}), {
+				item,
+			});
 		});
+
 	});
 
 	it('trims if string', function () {
